@@ -7,7 +7,7 @@
 </head>
 <body>
     <button id="playButton">покакать</button>
-    
+
     <script>
         // Список звуковых файлов в папке
         const soundFiles = [
@@ -18,14 +18,37 @@
             'sound/sound5.mp3'
         ];
 
+        // Переменная для хранения индекса последнего проигранного звука
+        let lastPlayedIndex = -1;
+
         // Получаем кнопку
         const playButton = document.getElementById('playButton');
 
+        // Функция для получения случайного индекса, отличного от предыдущего
+        function getRandomIndex() {
+            if (soundFiles.length === 1) {
+                // Если файл всего один, всегда возвращаем 0
+                return 0;
+            }
+
+            let newIndex;
+            
+            // Генерируем случайный индекс до тех пор, пока он не станет отличаться от предыдущего
+            do {
+                newIndex = Math.floor(Math.random() * soundFiles.length);
+            } while (newIndex === lastPlayedIndex);
+            
+            return newIndex;
+        }
+
         // Функция для воспроизведения случайного звука
         function playRandomSound() {
-            // Выбираем случайный звук
-            const randomIndex = Math.floor(Math.random() * soundFiles.length);
+            // Получаем случайный индекс (отличный от предыдущего)
+            const randomIndex = getRandomIndex();
             const randomSound = soundFiles[randomIndex];
+            
+            // Запоминаем индекс только что проигранного звука
+            lastPlayedIndex = randomIndex;
             
             // Создаем элемент audio
             const audio = new Audio(randomSound);
@@ -35,6 +58,13 @@
                 console.log('Ошибка воспроизведения:', error);
                 alert('Не удалось воспроизвести звук. Проверьте консоль для деталей.');
             });
+            
+            
+            // Возвращаем кнопку в исходное состояние после окончания звука
+            audio.onended = function() {
+                playButton.textContent = 'покакать';
+                playButton.disabled = false;
+            };
         }
 
         // Добавляем обработчик события на кнопку
