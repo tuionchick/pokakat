@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>покакать</title>
+</head>
+<body>
+    <button id="playButton">покакать</button>
+    
+    <script>
+        // Список звуковых файлов в папке
+        const soundFiles = [
+            'sound1.mp3',
+            'sound2.mp3',
+            'sound3.mp3',
+            'sound4.mp3',
+            'sound5.mp3'
+        ];
+
+        // Получаем кнопку
+        const playButton = document.getElementById('playButton');
+
+        // Функция для воспроизведения случайного звука
+        function playRandomSound() {
+            // Выбираем случайный звук
+            const randomIndex = Math.floor(Math.random() * soundFiles.length);
+            const randomSound = soundFiles[randomIndex];
+            
+            // Создаем элемент audio
+            const audio = new Audio(randomSound);
+            
+            // Воспроизводим звук
+            audio.play().catch(error => {
+                console.log('Ошибка воспроизведения:', error);
+                alert('Не удалось воспроизвести звук. Проверьте консоль для деталей.');
+            });
+        }
+
+        // Добавляем обработчик события на кнопку
+        playButton.addEventListener('click', playRandomSound);
+    </script>
+</body>
+</html>
